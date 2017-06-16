@@ -719,16 +719,24 @@ public class guiEmitirPedido extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRemoverItemActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if(JOptionPane.showConfirmDialog(null, "Confirma exclusão") == 0) {
-            daopedido.excluir(pedido);
-            estadoInicial();
-        }
+        
+            if(JOptionPane.showConfirmDialog(null, "Confirma exclusão do pedido") == 0) {
+                daopedido.excluir(pedido);
+                estadoInicial();
+            }
+        
     }//GEN-LAST:event_btnExcluirActionPerformed
 
     private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
-        if(JOptionPane.showConfirmDialog(null, "Confirma alteração") == 0) {
-            daopedido.alterar(pedido);
-            estadoInicial();
+        if(pedido.getItensPedido().isEmpty()){
+            JOptionPane.showMessageDialog(null,
+                                         "Não é permitido salvar um pedido sem um item.");
+            txtCodProd.requestFocus();
+        }else{
+            if(JOptionPane.showConfirmDialog(null, "Confirma alteração do pedido") == 0) {
+                daopedido.alterar(pedido);
+                estadoInicial();
+            }
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
    
