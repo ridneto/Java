@@ -272,13 +272,14 @@ public class guiVendedor extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
             
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         vendedor = null;        
         String cpf = mskCPF.getText().replace(".", "").replace("-", "");
              
-        if(validaCPF(cpf)){
+        if(!validaCPF(cpf)){
             JOptionPane.showMessageDialog(null,"CPF informado inválido.\nPor favor, tente novamente.");
             mskCPF.setText("");
             mskCPF.requestFocus();

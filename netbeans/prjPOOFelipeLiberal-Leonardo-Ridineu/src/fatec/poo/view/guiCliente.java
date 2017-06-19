@@ -289,6 +289,7 @@ public class guiCliente extends javax.swing.JFrame {
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtEndereco, txtNome});
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtLimiteCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtLimiteCreditoActionPerformed
@@ -296,7 +297,8 @@ public class guiCliente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtLimiteCreditoActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
-        cliente = new Cliente(mskCPF.getText().replace(".", "").replace("-", ""), txtNome.getText(), Double.parseDouble(txtLimiteCredito.getText()));
+        cliente = new Cliente(mskCPF.getText().replace(".", "").replace("-", ""), 
+                             txtNome.getText(), Double.parseDouble(txtLimiteCredito.getText()));
         
         cliente.setEndereco(txtEndereco.getText());
         cliente.setCidade(txtCidade.getText());

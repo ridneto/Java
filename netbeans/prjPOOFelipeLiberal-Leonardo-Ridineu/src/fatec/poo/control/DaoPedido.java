@@ -122,7 +122,6 @@ public class DaoPedido {
     }
     
     public void alterar(Pedido pedido){
-        PreparedStatement ps = null;
         try {            
            daocliente.alterar(pedido.getCliente());
            

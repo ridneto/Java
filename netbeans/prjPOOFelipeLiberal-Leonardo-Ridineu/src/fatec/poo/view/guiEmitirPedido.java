@@ -10,6 +10,7 @@ import fatec.poo.model.*;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -483,9 +484,10 @@ public class guiEmitirPedido extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-	
-	private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+			    					  	
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         conexao = new Conexao("BD1521033","BD1521033");
         conexao.setDriver("oracle.jdbc.driver.OracleDriver");
         conexao.setConnectionString("jdbc:oracle:thin:@apolo:1521:xe");
@@ -494,12 +496,12 @@ public class guiEmitirPedido extends javax.swing.JFrame {
         daovendedor = new DaoVendedor(conexao.conectar());
         daoproduto = new DaoProduto(conexao.conectar());
     }//GEN-LAST:event_formWindowOpened
-	
-	private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
         conexao.fecharConexao();
         dispose();
     }//GEN-LAST:event_formWindowClosed
-	
+
     private void btnPesqNumPedidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqNumPedidoActionPerformed
         pedido = daopedido.consultar(Integer.parseInt(txtNumPedido.getText()));
         
@@ -514,6 +516,7 @@ public class guiEmitirPedido extends javax.swing.JFrame {
            mskCPFVend.setText(pedido.getVendedor().getCpf());
            lblNomeVendedor.setText(pedido.getVendedor().getNome());
            attGuiItem();
+           ind = pedido.getItensPedido().get(pedido.getItensPedido().size() - 1).getNumeroItem();
            
            alterando = true;
            txtCodProd.setEnabled(true);
@@ -522,19 +525,20 @@ public class guiEmitirPedido extends javax.swing.JFrame {
            btnAlterar.setEnabled(true);
            btnExcluir.setEnabled(true);
         }else{  
+            ind = 0;
             alterando = false;
             mskDataPedido.setEnabled(true);
             mskDataPedido.requestFocus();
         }
     }//GEN-LAST:event_btnPesqNumPedidoActionPerformed
-    
-	private void txtNumPedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumPedidoKeyTyped
+
+    private void txtNumPedidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNumPedidoKeyTyped
         if(!numeros.contains(evt.getKeyChar()+"")){
             evt.consume();
         }
     }//GEN-LAST:event_txtNumPedidoKeyTyped
-	
-	private void mskDataPedidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mskDataPedidoKeyReleased
+
+    private void mskDataPedidoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mskDataPedidoKeyReleased
         if(mskDataPedido.getText().replace(" ", "").length() == 10){
             SimpleDateFormat df = new SimpleDateFormat ("dd/MM/yyyy");
             df.setLenient(false); 
@@ -552,7 +556,7 @@ public class guiEmitirPedido extends javax.swing.JFrame {
             } 
         }
     }//GEN-LAST:event_mskDataPedidoKeyReleased
-	
+
     private void btnPesqCPFCliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqCPFCliActionPerformed
         cliente = daocliente.consultar(mskCPFCli.getText().replace(".", "").replace("-", ""));
         
@@ -591,7 +595,7 @@ public class guiEmitirPedido extends javax.swing.JFrame {
 
     private void btnPesqCodProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesqCodProdActionPerformed
         produto = null;
-        
+                
         for(int i=0; i<pedido.getItensPedido().size(); i++){
             if(Integer.parseInt(txtCodProd.getText()) == pedido.getItensPedido().get(i).getProduto().getCodigo()){
                 produto = pedido.getItensPedido().get(i).getProduto();
@@ -624,15 +628,15 @@ public class guiEmitirPedido extends javax.swing.JFrame {
             evt.consume();
         }
     }//GEN-LAST:event_txtCodProdKeyTyped
-	
-	private void txtQntVendidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQntVendidaKeyTyped
-         if(!numeros.contains(evt.getKeyChar()+"")){
+
+    private void txtQntVendidaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtQntVendidaKeyTyped
+       if(!numeros.contains(evt.getKeyChar()+"")){
             evt.consume();
         }
     }//GEN-LAST:event_txtQntVendidaKeyTyped
-	
-	private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
-      
+
+    private void btnAddItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddItemActionPerformed
+        
         if(Integer.parseInt(txtQntVendida.getText()) == 0 || txtQntVendida.getText().equals("")){
             JOptionPane.showMessageDialog(null,
                                          "Quantidade informada inválida.");
@@ -640,12 +644,11 @@ public class guiEmitirPedido extends javax.swing.JFrame {
         }else{
             if(Integer.parseInt(txtQntVendida.getText()) > produto.getQtdeDisponivel()){
                 JOptionPane.showMessageDialog(null,
-                                         "Quantidade informa ultrapassa atual estoque.\n" +
+                                         "Quantidade informada ultrapassa atual estoque.\n" +
                                          "Atual estoque do produto: " + produto.getQtdeDisponivel());
                 txtQntVendida.requestFocus();                
             }else{
-                itempedido = new ItemPedido(pedido.getItensPedido().size() + 1,
-                                            Integer.parseInt(txtQntVendida.getText()));
+                itempedido = new ItemPedido(++ind, Integer.parseInt(txtQntVendida.getText()));
                 itempedido.setProduto(produto);
                                 
                 if(pedido.getCliente().getLimiteDisp() < itempedido.calcCustoItem()){
@@ -663,16 +666,20 @@ public class guiEmitirPedido extends javax.swing.JFrame {
                             pedido.getItensPedido().remove(i);
                             break;
                         }
-                    }                    
+                    }   
+                    
                     pedido.addItemPedido(itempedido);
                     txtCodProd.requestFocus();
                     attGuiItem();
+                    
                     txtQntVendida.setText("");
                     lblDescricaoProd.setText("");
                     txtCodProd.setText("");
+                    
                     btnAddItem.setEnabled(false);
                     txtCodProd.setEnabled(true);
                     btnPesqCodProd.setEnabled(true);
+                    
                     if(alterando){
                         btnIncluir.setEnabled(false);
                         btnExcluir.setEnabled(true);
@@ -686,7 +693,7 @@ public class guiEmitirPedido extends javax.swing.JFrame {
             }                
         }
     }//GEN-LAST:event_btnAddItemActionPerformed
-	
+
     private void btnRemoverItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoverItemActionPerformed
         if(tbItensProduto.getSelectedRow() == -1){
             JOptionPane.showMessageDialog(null, "Nenhum item foi seleciona para remover");
@@ -710,7 +717,7 @@ public class guiEmitirPedido extends javax.swing.JFrame {
             if(tbItensProduto.getRowCount() == 0){
                 btnRemoverItem.setEnabled(false);
             }
-        }        
+        } 
     }//GEN-LAST:event_btnRemoverItemActionPerformed
 
     private void btnIncluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIncluirActionPerformed
@@ -736,20 +743,22 @@ public class guiEmitirPedido extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnAlterarActionPerformed
-  
-	private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
-        if(JOptionPane.showConfirmDialog(null, "Confirmar exclusão do pedido") == 0) {
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+         if(JOptionPane.showConfirmDialog(null, "Confirmar exclusão do pedido") == 0) {
             daopedido.excluir(pedido);
             estadoInicial();
-        }        
+        }    
     }//GEN-LAST:event_btnExcluirActionPerformed
-	
-	private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
-        dispose();
+
+    private void btnSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSairActionPerformed
+         dispose();
     }//GEN-LAST:event_btnSairActionPerformed
 	
     private void attGuiItem(){
         modTblProduto.setNumRows(0);
+        Collections.sort(pedido.getItensPedido());
+        
         for(int i=0; i<pedido.getItensPedido().size(); i++){            
             String linha[] = {String.valueOf(pedido.getItensPedido().get(i).getProduto().getCodigo()),
                             pedido.getItensPedido().get(i).getProduto().getDescricao(),
@@ -867,8 +876,7 @@ public class guiEmitirPedido extends javax.swing.JFrame {
     private javax.swing.JTextField txtNumPedido;
     private javax.swing.JTextField txtQntVendida;
     // End of variables declaration//GEN-END:variables
-    
-   
+       
     private Cliente cliente;
     private ItemPedido itempedido;
     private Pedido pedido;
@@ -884,5 +892,6 @@ public class guiEmitirPedido extends javax.swing.JFrame {
     private DefaultTableModel modTblProduto;
     private String numeros = "0123456789";
     private boolean alterando;
+    private int ind;
     private DecimalFormat df = new DecimalFormat("#,##0.00");
 }

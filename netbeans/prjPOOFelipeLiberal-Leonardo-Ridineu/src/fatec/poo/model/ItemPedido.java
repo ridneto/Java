@@ -1,6 +1,6 @@
 package fatec.poo.model;
 
-public class ItemPedido{
+public class ItemPedido implements Comparable<ItemPedido>{
     private int numeroItem, qtdeVendida;
     private Produto produto;
     private Pedido pedido;
@@ -45,8 +45,13 @@ public class ItemPedido{
     public double calcCustoItem(){
        return (qtdeVendida * produto.getPrecoUnit());
     }
-       
-    public boolean a(ItemPedido itempedido){
-        return true;
+
+    public void setNumeroItem(int numeroItem) {
+        this.numeroItem = numeroItem;
     }
+    
+    @Override
+    public int compareTo(ItemPedido itempedido){
+        return(this.numeroItem - itempedido.getNumeroItem());
+    }    
 }
