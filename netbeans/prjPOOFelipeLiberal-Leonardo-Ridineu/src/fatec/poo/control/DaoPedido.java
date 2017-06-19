@@ -73,7 +73,7 @@ public class DaoPedido {
     public void inserir(Pedido pedido){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO tbpedido(Numero, Status, DataPedido, DataPagto, CPFCliente, CPFVendedor) VALUES(?,?,?,?,?)");
+            ps = connection.prepareStatement("INSERT INTO tbpedido(Numero, Status, DataPedido, DataPagto, CPFCliente, CPFVendedor) VALUES(?,?,?,?,?,?)");
             
             ps.setInt(1, pedido.getNumero());
             ps.setString(2, "1");
