@@ -149,7 +149,7 @@
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
           <Events>
-            <EventHandler event="focusLost" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="mskDataPedidoFocusLost"/>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="mskDataPedidoKeyReleased"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnPesqNumPedido">
