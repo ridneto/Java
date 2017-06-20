@@ -516,7 +516,6 @@ public class guiEmitirPedido extends javax.swing.JFrame {
            mskCPFVend.setText(pedido.getVendedor().getCpf());
            lblNomeVendedor.setText(pedido.getVendedor().getNome());
            attGuiItem();
-           ind = pedido.getItensPedido().get(pedido.getItensPedido().size() - 1).getNumeroItem();
            
            alterando = true;
            txtCodProd.setEnabled(true);
@@ -525,7 +524,6 @@ public class guiEmitirPedido extends javax.swing.JFrame {
            btnAlterar.setEnabled(true);
            btnExcluir.setEnabled(true);
         }else{  
-            ind = 0;
             alterando = false;
             mskDataPedido.setEnabled(true);
             mskDataPedido.requestFocus();
@@ -648,7 +646,7 @@ public class guiEmitirPedido extends javax.swing.JFrame {
                                          "Atual estoque do produto: " + produto.getQtdeDisponivel());
                 txtQntVendida.requestFocus();                
             }else{
-                itempedido = new ItemPedido(++ind, Integer.parseInt(txtQntVendida.getText()));
+                itempedido = new ItemPedido(1, Integer.parseInt(txtQntVendida.getText()));
                 itempedido.setProduto(produto);
                                 
                 if(pedido.getCliente().getLimiteDisp() < itempedido.calcCustoItem()){
@@ -892,6 +890,5 @@ public class guiEmitirPedido extends javax.swing.JFrame {
     private DefaultTableModel modTblProduto;
     private String numeros = "0123456789";
     private boolean alterando;
-    private int ind;
     private DecimalFormat df = new DecimalFormat("#,##0.00");
 }

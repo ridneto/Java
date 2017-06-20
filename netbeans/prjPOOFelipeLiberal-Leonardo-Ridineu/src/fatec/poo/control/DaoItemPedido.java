@@ -57,7 +57,7 @@ public class DaoItemPedido {
     public void inserir(ItemPedido itempedido){
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("INSERT INTO tbitem_Pedido(NumeroPedido, CodigoProduto, QtVendida " +
+            ps = connection.prepareStatement("INSERT INTO tbitem_Pedido(NumeroPedido, CodigoProduto, QtVendida) " +
                                         "VALUES(?,?,?)");
             
             ps.setInt(1, itempedido.getPedido().getNumero());
